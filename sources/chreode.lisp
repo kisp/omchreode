@@ -56,7 +56,7 @@
 (defmethod get-value ((generator tab-norm) x)
   (let ((int-index (min
 		    (floor (* x (length (tab-vector generator))))
-		    (1- (length (tab-vector generator))))))    
+		    (1- (length (tab-vector generator))))))
     (aref (tab-vector generator) int-index)))
 
 (defclass chreode (abstract-generator)
@@ -69,7 +69,7 @@
 (defmethod! make-chreode (nb-period incr/decr up/down offset deviation)
   :initvals (list 4 :decr :down 0 1)
   :menuins '((1 ( ("decr" :decr) ("incr" :incr)))
-            (2 ( ("down" :down) ("up" :up) )))
+	     (2 ( ("down" :down) ("up" :up) )))
   (assert (member incr/decr '(:incr :decr)))
   (assert (member up/down '(:up :down)))
   (make-instance 'chreode :nb-period nb-period
@@ -92,8 +92,8 @@
 
 (defmethod get-value ((generator chreode) x)
   (let ((nx (if (eql (chreode-incr/decr generator) :decr)
-              (- 1.0 x)
-              x)))
+		(- 1.0 x)
+		x)))
     (assert (<= 0.0 x 1.0))
     (+ (get-value (chreode-offset generator) x)
        (* (get-value (chreode-deviation generator) x)
@@ -141,11 +141,11 @@
   (unless path (setq path (choose-new-text-file-dialog)))
   (with-open-file (out path :direction :output :if-exists :supersede)
     (loop for event in (mat-trans params)
-          do (format out "~{~A~^ ~}~%" event))))
+       do (format out "~{~A~^ ~}~%" event))))
 
 (defmethod! save-text-coll (path &rest params)
   (unless path (setq path (choose-new-text-file-dialog)))
   (with-open-file (out path :direction :output :if-exists :supersede)
     (loop for event in (mat-trans params)
-          for i upfrom 1
-          do (format out "~A, ~{~A~^ ~};~%" i event))))
+       for i upfrom 1
+       do (format out "~A, ~{~A~^ ~};~%" i event))))
