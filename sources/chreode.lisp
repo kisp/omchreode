@@ -122,6 +122,7 @@
 
 (ompw:define-box get-durs (dur-sampler)
   :non-generic t
+  :outputs 3
   (loop with time = 0 while (< time (duration dur-sampler)) for norm-offset =
        (/ time (duration dur-sampler)) for dur =
        (dur-sampler-next-dur dur-sampler norm-offset) collect dur into durs
