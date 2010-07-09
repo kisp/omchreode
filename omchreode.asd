@@ -1,4 +1,4 @@
-;;; -*- Mode:Lisp; Syntax:ANSI-Common-Lisp; Coding:utf-8 -*-
+;;; -*- Mode:Lisp; Syntax:ANSI-Common-Lisp  -*-
 
 (asdf:defsystem omchreode
   :version "0.2.0"

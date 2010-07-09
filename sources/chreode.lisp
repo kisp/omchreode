@@ -1,4 +1,5 @@
-(in-package :omchreode)
+#+om(in-package :om)
+#-om(in-package :omchreode)
 
 (ompw:define-menu omchreode)
 (ompw:in-menu omchreode)
