@@ -1,1 +1,28 @@
-Despite the name, omchreode can be loaded into OM as well as PWGL.
+Despite its name, omchreode can be loaded into OM as well as PWGL.
+
+Installation in PWGL
+--------------------
+omchreode depends on ompw, which is already included with
+PWGL. Because of that, I recommend getting the latest version of PWGL
+at http://www2.siba.fi/PWGL/downloads.html.
+
+Then download omchreode from
+http://github.com/kisp/omchreode/tarball/master which always points to
+the latest version. Uncompress and rename the directory to omchreode
+if you like.
+
+A good location to place it is in $HOME/PWGL-User/User-library.
+
+Installation in OM
+--------------------
+omchreode depends on ompw, which also needs to be installed. Download
+it from http://github.com/kisp/ompw/tarball/master which always points
+to the latest version. Uncompress and *rename* the directory to ompw.
+
+Then download omchreode from
+http://github.com/kisp/omchreode/tarball/master which always points to
+the latest version. Uncompress and *rename* the directory to
+omchreode.
+
+A good location to place the two libraries is in
+/Applications/OM-6.2.2-SRC/libraries (depending on your OM version).
