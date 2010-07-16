@@ -3,5 +3,9 @@
 
 (require-library "ompw")
 
-(load (compile-file (merge-pathnames #p"sources/bpf.lisp" *load-pathname*)))
-(load (compile-file (merge-pathnames #p"sources/chreode.lisp" *load-pathname*)))
+(flet ((load-compile (path)
+	 (if (member :om-deliver *features*)
+	     (om::compile&load (make-pathname :type nil :defaults path))
+	     (load (compile-file path)))))
+  (load-compile (merge-pathnames #p"sources/bpf.lisp" *load-pathname*))
+  (load-compile (merge-pathnames #p"sources/chreode.lisp" *load-pathname*)))
