@@ -123,11 +123,13 @@
 (ompw:define-box get-durs (dur-sampler)
   :non-generic t
   :outputs 3
-  (loop with time = 0 while (< time (duration dur-sampler)) for norm-offset =
-       (/ time (duration dur-sampler)) for dur =
-       (dur-sampler-next-dur dur-sampler norm-offset) collect dur into durs
-     collect time into offsets collect norm-offset into norm-offsets do
-       (incf time dur) finally (return (values durs offsets norm-offsets))))
+  (loop with time = 0 while (< time (duration dur-sampler))
+     for norm-offset = (/ time (duration dur-sampler))
+     for dur = (dur-sampler-next-dur dur-sampler norm-offset)
+     collect dur into durs
+     collect time into offsets collect norm-offset into norm-offsets
+     do (incf time dur)
+     finally (return (values durs offsets norm-offsets))))
 
 (defun mat-trans (matrix)
   (assert (apply #'= (mapcar #'length matrix)) nil
