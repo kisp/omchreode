@@ -121,15 +121,21 @@
     (if (= 0.0 dur) (null-dur dur-sampler) dur)))
 
 (ompw:define-box get-durs (dur-sampler)
+  "The 3 outputs return
+  - durs, say (1 2 3)
+  - the offsets (0 1 3)
+  - the offsets scaled between 0 and 1"
   :non-generic t
   :outputs 3
-  (loop with time = 0 while (< time (duration dur-sampler))
-     for norm-offset = (/ time (duration dur-sampler))
-     for dur = (dur-sampler-next-dur dur-sampler norm-offset)
-     collect dur into durs
-     collect time into offsets collect norm-offset into norm-offsets
-     do (incf time dur)
-     finally (return (values durs offsets norm-offsets))))
+  (loop with time = 0
+       while (< time (duration dur-sampler))
+       for norm-time = (/ time (duration dur-sampler))
+       for dur = (dur-sampler-next-dur dur-sampler norm-time)
+       collect dur into durs
+       collect time into offsets
+       collect norm-time into norm-offsets
+       do (incf time dur)
+       finally (return (values durs offsets norm-offsets))))
 
 (defun mat-trans (matrix)
   (assert (apply #'= (mapcar #'length matrix)) nil
