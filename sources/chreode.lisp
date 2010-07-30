@@ -15,6 +15,10 @@
   ((generators :accessor generators :initarg :generators)
    (circ :accessor flip-circ)))
 
+(defclass transformer (abstract-generator)
+  ((generator :accessor transformer-generator :initarg :generator)
+   (function  :accessor transformer-function  :initarg :function)))
+
 (defclass tab (abstract-generator)
   ((vector :accessor tab-vector :initarg :tab-vector)))
 
@@ -33,12 +37,17 @@
 
 (defmethod get-value ((generator abstract-generator) x)
   (declare (ignore x))
-  (error "abstract-generator get-value should not be called"))
+  (error "Abstract-generator get-value should not be called.~%~
+	  Probably a get-value method for ~S is missing." generator))
 
 (defmethod get-value ((generator function) x) (funcall generator x))
 
 (defmethod get-value ((generator flip) x)
   (get-value (pop (flip-circ generator)) x))
+
+(defmethod get-value ((generator transformer) x)
+  (funcall (transformer-function generator)
+	   (get-value (transformer-generator generator) x)))
 
 (defmethod get-value ((generator tab) (x integer))
   (aref (tab-vector generator) x))
@@ -77,6 +86,10 @@
   (setf (flip-circ flip) (list2circlist (copy-list (generators flip))))
   flip)
 
+(ompw:define-box make-transformer (generator (function abs))
+  :non-generic t
+  (make-instance 'transformer :generator generator :function  function))
+
 (ompw:define-box make-tab (values)
   :non-generic t
   (make-instance 'tab :tab-vector (coerce values 'vector)))
@@ -84,7 +97,6 @@
 (ompw:define-box make-tab-norm (values)
   :non-generic t
   (make-instance 'tab-norm :tab-vector (coerce values 'vector)))
-
 
 (ompw:define-box make-chreode ((nb-period 4) (incr/decr :decr) (up/down :down)
 			       (offset 0) (deviation 1))
@@ -95,7 +107,6 @@
   (assert (member up/down '(:up :down)))
   (make-instance 'chreode :nb-period nb-period :incr/decr incr/decr :up/down
 		 up/down :offset offset :deviation deviation))
-
 
 (defun xcosx (x y) (* x (cos (* x y (* 2 pi)))))
 
@@ -108,17 +119,20 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defclass dur-sampler nil
     ((generator :accessor generator :initarg :generator)
-     (duration :accessor duration :initarg :duration)
-     (null-dur :accessor null-dur :initarg :null-dur))))
+     (duration :accessor duration :initarg :duration))))
 
-(ompw:define-box make-dur-sampler (generator duration &optional null-dur)
+(ompw:define-box make-dur-sampler (generator duration)
   :non-generic t
-  (make-instance 'dur-sampler :generator generator :duration duration :null-dur
-		 null-dur))
+  (make-instance 'dur-sampler :generator generator :duration duration))
 
 (defun dur-sampler-next-dur (dur-sampler time)
   (let ((dur (get-value (generator dur-sampler) time)))
-    (if (= 0.0 dur) (null-dur dur-sampler) dur)))
+    (if (<= dur 0)
+	(error "dur-sampler got from ~S at time ~S the dur ~S~%~
+                Please consider using make-transformer with abs to ~
+                avoid negative durations."
+	       (generator dur-sampler) time dur)
+	dur)))
 
 (ompw:define-box get-durs (dur-sampler &optional (max 1000))
   "The 3 outputs return
