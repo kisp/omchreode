@@ -1,7 +1,7 @@
 ;;; -*- Mode:Lisp; Syntax:ANSI-Common-Lisp  -*-
 
 (asdf:defsystem omchreode
-  :version "0.2.0"
+  :version "0.2.1"
   :description "Port of OMCHREODE library of Jean-Baptiste Barrière"
   :maintainer "Kilian Sprotte <kilian.sprotte@gmail.com>"
   :author "Kilian Sprotte <kilian.sprotte@gmail.com>"
