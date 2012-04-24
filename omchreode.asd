@@ -26,5 +26,4 @@
   :serial t
   :components ((:module "sources"
 			:components ((:file "package")
-				     ;; (:file "bpf")
 				     (:file "chreode")))))
