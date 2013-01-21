@@ -18,7 +18,7 @@
 ;;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (asdf:defsystem omchreode
-  :version "0.2.1"
+  :version "0.2.2"
   :description "Port of OMCHREODE library of Jean-Baptiste Barrière"
   :maintainer "Kilian Sprotte <kilian.sprotte@gmail.com>"
   :author "Kilian Sprotte <kilian.sprotte@gmail.com>"
